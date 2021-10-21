@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.f21comp1011gctest1student.NetflixTableController">
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.f21comp1011gctest1student.NetflixTableController">
     <children>
         <BorderPane prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
@@ -29,7 +29,7 @@
                 </TableView>
             </center>
             <top>
-                <Label text="NetFlix" BorderPane.alignment="CENTER" />
+                <Label id="header" stylesheets="@styles.css" text="NetFlix" BorderPane.alignment="CENTER" />
             </top>
             <bottom>
                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
@@ -37,7 +37,7 @@
                         <CheckBox fx:id="movieCheckBox" mnemonicParsing="false" onAction="#applyFilter" text="Movie" />
                         <CheckBox fx:id="tvCheckBox" mnemonicParsing="false" onAction="#applyFilter" text="TV" />
                         <ComboBox fx:id="selectRatingComboBox" layoutX="333.0" layoutY="30.0" onAction="#applyFilter" promptText="Select Rating" />
-                        <Label id="label" fx:id="numOfShowsLabel" text="Number of movies /shows:" />
+                        <Label id="label" fx:id="numOfShowsLabel" stylesheets="@styles.css" text="Number of movies /shows:" />
                     </children>
                     <padding>
                   <Insets top="20.0" />
