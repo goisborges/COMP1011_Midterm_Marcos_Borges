@@ -1,5 +1,11 @@
 package com.example.f21comp1011gctest1student;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class NetflixShow {
         private String showId;
         private String type;
@@ -10,12 +16,39 @@ public class NetflixShow {
 
 
     public NetflixShow(String showId, String type, String title, String rating, String director, String cast) {
-        this.showId = showId;
-        this.type = type;
-        this.title = title;
-        this.director = director;
-        this.cast = cast;
-        this.rating = rating;
+
+        //create a Regex to check the showId pattern
+        Pattern p = Pattern.compile("[s][0-9]*");
+        Matcher m = p.matcher(showId);
+        if (m.find() ){
+            this.showId = showId;
+        }
+
+        //Movie pr TV Show are the options
+        if (type.equals("TV Show") || type.equals("Movie")){
+            this.type = type;
+        }
+
+        //title should hold at least 2 chars
+        if (title.length() >= 2){
+            this.title = title;
+        }
+
+        //rating should be one of the following "PG-13","R","TV-14","TV-G","TV-MA","TV-Y","TV-Y7"
+        List<String> ratingsList = Arrays.asList("PG-13","R","TV-14","TV-G","TV-MA","TV-Y","TV-Y7");
+        if (ratingsList.contains(rating)){
+            this.rating = rating;
+        }
+
+        //director should hold at least 2 chars
+        if (director.length() >= 2){
+            this.director = director;
+        }
+
+        //cast should hold at least 5 chars
+        if (cast.length() >= 5){
+            this.cast = cast;
+        }
 
     }
 
