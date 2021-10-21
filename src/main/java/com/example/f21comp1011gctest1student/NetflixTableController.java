@@ -67,6 +67,10 @@ public class NetflixTableController implements Initializable {
 
         //show the number of Shows/Movies on the list. Getting from the tableview
         numOfShowsLabel.setText("Number of movies/shows: "+ tableView.getItems().size());
+
+        //set checkboxes selected
+        movieCheckBox.setSelected(true);
+        tvCheckBox.setSelected(true);
     }
 
     @FXML
