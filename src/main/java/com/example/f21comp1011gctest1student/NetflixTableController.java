@@ -79,8 +79,9 @@ public class NetflixTableController implements Initializable {
             tableView.getItems().addAll(DBUtility.getMoviesOnly());
         }
         else if (movieCheckBox.isSelected() == false && tvCheckBox.isSelected()==true){
-
+            //getTvShowsOnly - clear tableView and populate with data again
         }
+        //selectRatingComboBox.getSelectionModel().getSelectedItem();
 
     }
 }
