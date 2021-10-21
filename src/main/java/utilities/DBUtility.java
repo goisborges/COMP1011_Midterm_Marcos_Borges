@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 
 public class DBUtility {
+
+    //Database connection data. Student was not working. I had to drop and re-create the user
     private static String user = "student";
     private static String pw = "student";
     private static String connectURL = "jdbc:mysql://localhost:3306/javaTest";
@@ -23,7 +25,7 @@ public class DBUtility {
         try(
                 Connection conn = DriverManager.getConnection(connectURL, user, pw);
                 Statement statement = conn.createStatement();
-                ResultSet resultSet = statement.executeQuery(sql);
+                ResultSet resultSet = statement.executeQuery(sql)
         )
         {
             while (resultSet.next())
