@@ -65,6 +65,7 @@ public class NetflixTableController implements Initializable {
 
         tableView.getItems().addAll(DBUtility.getNetflixCatalog());
 
+        //show the number of Shows/Movies on the list. Getting from the tableview
         numOfShowsLabel.setText("Number of movies/shows: "+ tableView.getItems().size());
     }
 
