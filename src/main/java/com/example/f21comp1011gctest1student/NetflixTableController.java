@@ -1,5 +1,9 @@
 package com.example.f21comp1011gctest1student;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -71,17 +75,116 @@ public class NetflixTableController implements Initializable {
         //set checkboxes selected
         movieCheckBox.setSelected(true);
         tvCheckBox.setSelected(true);
+
+        //set ComboBox to AllRating value by default
+        selectRatingComboBox.getSelectionModel().select(0);
+
+
     }
+
+
+
 
     @FXML
     void applyFilter(ActionEvent event)  {
+
         if (movieCheckBox.isSelected() == true && tvCheckBox.isSelected()==false) {
-            tableView.getItems().addAll(DBUtility.getMoviesOnly());
+            FilteredList<NetflixShow> filteredList = new FilteredList<>(DBUtility.dataList, b -> true);
+            filteredList.setPredicate(netflixShow -> {
+                if (netflixShow.getType().contains("Movie") && netflixShow.getRating().contains(selectRatingComboBox.getSelectionModel().getSelectedItem())) {
+                    return true;
+                }
+                else if (netflixShow.getType().contains("Movie") && selectRatingComboBox.getSelectionModel().getSelectedItem() == "All ratings"){
+                    return true;
+                }
+
+
+                else return false;
+            });
+
+            SortedList<NetflixShow> sortedData = new SortedList<>(filteredList);
+            sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+            tableView.setItems(sortedData);
+            numOfShowsLabel.setText("Number of movies/shows: "+ tableView.getItems().size());
+
+            System.out.println("Filtering Movies Only");
+        }
+        else if (movieCheckBox.isSelected() == true && tvCheckBox.isSelected()==true){
+            FilteredList<NetflixShow> filteredList = new FilteredList<>(DBUtility.dataList, b -> true);
+            filteredList.setPredicate(netflixShow -> {
+                if (netflixShow.getType().contains("Movie") || netflixShow.getType().contains("TV Show") && netflixShow.getRating().contains(selectRatingComboBox.getSelectionModel().getSelectedItem())) {
+                    return true;
+                }
+                else if (netflixShow.getType().contains("Movie") || netflixShow.getType().contains("TV Show") && selectRatingComboBox.getSelectionModel().getSelectedItem() == "All ratings"){
+                    return true;
+                }
+                else return false;
+            });
+
+            SortedList<NetflixShow> sortedData = new SortedList<>(filteredList);
+            sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+            tableView.setItems(sortedData);
+            numOfShowsLabel.setText("Number of movies/shows: "+ tableView.getItems().size());
+
+            System.out.println("Showing Movies and TV Shows");
         }
         else if (movieCheckBox.isSelected() == false && tvCheckBox.isSelected()==true){
-            //getTvShowsOnly - clear tableView and populate with data again
+            FilteredList<NetflixShow> filteredList = new FilteredList<>(DBUtility.dataList, b -> true);
+            filteredList.setPredicate(netflixShow -> {
+                if (netflixShow.getType().contains("TV Show") && netflixShow.getRating().contains(selectRatingComboBox.getSelectionModel().getSelectedItem())) {
+                    return true;
+                }
+                else if (netflixShow.getType().contains("TV Show") && selectRatingComboBox.getSelectionModel().getSelectedItem() == "All ratings"){
+                    return true;
+                }else return false;
+            });
+
+            SortedList<NetflixShow> sortedData = new SortedList<>(filteredList);
+            sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+            tableView.setItems(sortedData);
+            numOfShowsLabel.setText("Number of movies/shows: "+ tableView.getItems().size());
+
+            System.out.println("Filtering TV Shows Only");
         }
-        //selectRatingComboBox.getSelectionModel().getSelectedItem();
+        else if (movieCheckBox.isSelected() == false && tvCheckBox.isSelected()==false) {
+            try {
+                FilteredList<NetflixShow> filteredList = new FilteredList<>(DBUtility.dataList, b -> true);
+                filteredList.setPredicate(netflixShow -> {
+                    return false;
+                });
+
+                SortedList<NetflixShow> sortedData = new SortedList<>(filteredList);
+                sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+                tableView.setItems(sortedData);
+                numOfShowsLabel.setText("Number of movies/shows: "+ tableView.getItems().size());
+
+                System.out.println("No filters selected. Not showing Movies nor TV Shows");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //check if any rating is selected and filter
+//        if (selectRatingComboBox.getSelectionModel().getSelectedItem() != "All ratings"){
+//            FilteredList<NetflixShow> filteredList = new FilteredList<>(DBUtility.dataList, b -> true);
+//            filteredList.setPredicate(netflixShow -> {
+//                if (netflixShow.getRating().contains(selectRatingComboBox.getSelectionModel().getSelectedItem())) {
+//
+//                    return true;
+//                } else {
+//
+//                    return false;
+//                }
+//            });
+//
+//            SortedList<NetflixShow> sortedData = new SortedList<>(filteredList);
+//            sortedData.comparatorProperty().bind(tableView.comparatorProperty());
+//            tableView.setItems(sortedData);
+//            numOfShowsLabel.setText("Number of movies/shows: "+ tableView.getItems().size());
+//            System.out.println("Filtering by");
+//            System.out.println(selectRatingComboBox.getSelectionModel().getSelectedItem());
+//            System.out.println();
+//        }
 
     }
 }
