@@ -16,6 +16,7 @@ import java.util.List;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.TreeSet;
 
 public class NetflixTableController implements Initializable {
 
@@ -55,10 +56,12 @@ public class NetflixTableController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         selectRatingComboBox.getItems().add("All ratings");
+        selectRatingComboBox.getItems().addAll(getRatingsFromTable());
+
 
         //populate the combobox with the ratingsList. Hardcoded for now.
-        List<String> ratingsList = Arrays.asList("PG-13","R","TV-14","TV-G","TV-MA","TV-Y","TV-Y7");
-        selectRatingComboBox.getItems().addAll(ratingsList);
+//        List<String> ratingsList = Arrays.asList("PG-13","R","TV-14","TV-G","TV-MA","TV-Y","TV-Y7");
+//        selectRatingComboBox.getItems().addAll(ratingsList);
 
         showIdCol.setCellValueFactory(new PropertyValueFactory<>("showId"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -67,7 +70,7 @@ public class NetflixTableController implements Initializable {
         directorCol.setCellValueFactory(new PropertyValueFactory<>("director"));
         castCol.setCellValueFactory(new PropertyValueFactory<>("cast"));
 
-        tableView.getItems().addAll(DBUtility.getNetflixCatalog());
+        tableView.getItems().addAll(DBUtility.getNetflixCatalog("All", "All ratings"));
 
         //show the number of Shows/Movies on the list. Getting from the tableview
         numOfShowsLabel.setText("Number of movies/shows: "+ tableView.getItems().size());
@@ -79,10 +82,21 @@ public class NetflixTableController implements Initializable {
         //set ComboBox to AllRating value by default
         selectRatingComboBox.getSelectionModel().select(0);
 
-
+        selectRatingComboBox.getItems().addAll(getRatingsFromTable());
     }
 
+    //private method called getRatingsFromTable that returns a TreeSet of all the ratings in the table
+    //then it adds the ratings to the selectRatingComboBox
+    private TreeSet<String> getRatingsFromTable() {
+        TreeSet<String> ratings = new TreeSet<>();
+        for (NetflixShow show : tableView.getItems())
 
+            ratings.add(show.getRating());
+
+        System.out.println(ratings);
+        return ratings;
+
+    }
 
 
     @FXML
@@ -163,6 +177,8 @@ public class NetflixTableController implements Initializable {
                 e.printStackTrace();
             }
         }
+
+
 
         //check if any rating is selected and filter
 //        if (selectRatingComboBox.getSelectionModel().getSelectedItem() != "All ratings"){

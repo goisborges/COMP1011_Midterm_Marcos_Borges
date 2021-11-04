@@ -20,19 +20,27 @@ public class DBUtility {
     public static final ObservableList<NetflixShow> dataList = FXCollections.observableArrayList();
 
     //method to get information to populate the table
-    public static ArrayList<NetflixShow> getNetflixCatalog() {
+    public static ArrayList<NetflixShow> getNetflixCatalog(String showType, String showRating) {
 
         ArrayList<NetflixShow> netflixShows = new ArrayList<>();
 
-        String sql = "SELECT showId, type, title, rating, director, cast \n" +
-                    "FROM netflix ";
+        ResultSet resultSet = null;
+
+        String sql = "SELECT * FROM netflix WHERE type != ? AND rating != ?";
+        System.out.println(sql);
 
         try(
                 Connection conn = DriverManager.getConnection(connectURL, user, pw);
-                Statement statement = conn.createStatement();
-                ResultSet resultSet = statement.executeQuery(sql)
+                PreparedStatement statement = conn.prepareStatement(sql);
+
         )
         {
+            statement.setString(1, showType);
+            statement.setString(2, showRating);
+            System.out.println(statement);
+            resultSet = statement.executeQuery();
+
+
             while (resultSet.next())
             {
                 String showId = resultSet.getString("showId");
@@ -57,6 +65,16 @@ public class DBUtility {
         catch(Exception e)
         {
             e.printStackTrace();
+        }
+        finally{
+            //close result set
+            try{
+                if(resultSet != null)
+                    resultSet.close();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
         }
 
         dataList.addAll(netflixShows);
