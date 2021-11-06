@@ -29,21 +29,25 @@ public class DBUtility {
         //All types and ratings
 
         String sql = "";
+        String ratingSelected = "";
+
+        //Filter by all type and all rating
+        sql = "SELECT * FROM netflix WHERE type != ? AND rating != ?";
 
         //Filter by type, all ratings
-        if (showType != null && showRating == null) {
-            sql = "SELECT * FROM netflix WHERE type = ?";
+        if (!showType.equals("All") && showRating.equals("All ratings")) {
+            sql = "SELECT * FROM netflix WHERE type = ? and rating != ?";
         }
 
         //Filter by rating, all types
-        if (showRating != null && showType == null) {
-            sql = "SELECT * FROM netflix WHERE rating = ?";
+        else if (showType.equals("All") && !showRating.equals("All ratings")) {
+            sql = "SELECT * FROM netflix WHERE type != ? AND rating = ?";
         }
 
-        //Filter by type and rating
-        if (showType != null && showRating != null) {
-            sql = "SELECT * FROM netflix WHERE type != ? AND rating != ?";
+        else if (!showType.equals("All") && !showRating.equals("All ratings")) {
+            sql = "SELECT * FROM netflix WHERE type = ? AND rating = ?";
         }
+
 
         System.out.println(sql);
 
