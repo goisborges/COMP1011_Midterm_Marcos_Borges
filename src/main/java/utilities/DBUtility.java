@@ -26,7 +26,25 @@ public class DBUtility {
 
         ResultSet resultSet = null;
 
-        String sql = "SELECT * FROM netflix WHERE type != ? AND rating != ?";
+        //All types and ratings
+
+        String sql = "";
+
+        //Filter by type, all ratings
+        if (showType != null && showRating == null) {
+            sql = "SELECT * FROM netflix WHERE type = ?";
+        }
+
+        //Filter by rating, all types
+        if (showRating != null && showType == null) {
+            sql = "SELECT * FROM netflix WHERE rating = ?";
+        }
+
+        //Filter by type and rating
+        if (showType != null && showRating != null) {
+            sql = "SELECT * FROM netflix WHERE type != ? AND rating != ?";
+        }
+
         System.out.println(sql);
 
         try(
@@ -81,8 +99,5 @@ public class DBUtility {
         return netflixShows;
 
     }
-
-
-
 
 }

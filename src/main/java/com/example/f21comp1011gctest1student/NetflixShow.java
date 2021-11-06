@@ -20,18 +20,34 @@ public class NetflixShow {
         //create a Regex to check the showId pattern
         Pattern p = Pattern.compile("[s][0-9]*");
         Matcher m = p.matcher(showId);
+
+        //or
+//        if (showId.matches("[s]\\d*"))
+//            this.showId = showId;
+
         if (m.find() ){
             this.showId = showId;
         }
+        else {
+            throw new IllegalArgumentException("Invalid showId");
+        }
+
+
 
         //Movie pr TV Show are the options
         if (type.equals("TV Show") || type.equals("Movie")){
             this.type = type;
         }
+        else {
+            throw new IllegalArgumentException("Invalid type");
+        }
 
         //title should hold at least 2 chars
         if (title.length() >= 2){
             this.title = title;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid title");
         }
 
         //rating should be one of the following "PG-13","R","TV-14","TV-G","TV-MA","TV-Y","TV-Y7"
@@ -39,15 +55,24 @@ public class NetflixShow {
         if (ratingsList.contains(rating)){
             this.rating = rating;
         }
+        else {
+            throw new IllegalArgumentException("Invalid rating");
+        }
 
         //director should hold at least 2 chars
         if (director.length() >= 2){
             this.director = director;
         }
+        else {
+            throw new IllegalArgumentException("Invalid director");
+        }
 
         //cast should hold at least 5 chars
         if (cast.length() >= 5){
             this.cast = cast;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid cast");
         }
 
     }
